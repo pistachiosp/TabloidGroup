@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using TabloidCLI.Repositories;
 
@@ -12,6 +13,7 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
+        AuthorRepository autorRepo = new AuthorRepository();
     
 
     public PostMenuManager(IUserInterfaceManager parentUI, string conncectionString)
@@ -37,7 +39,12 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "1":
                     return this;
                 case "2":
-                    return this;
+                    Console.WriteLine("Write a new post");
+                    Console.Write("Title of post: ");
+                    string PostTitle = Console.ReadLine();
+                    Console.Write("Enter URL");
+                    string PostUrl = Console.ReadLine();
+                    List<Author> authors = new authorRepo.GetAll();
                 case "3":
                     return this;
                 case "4":
