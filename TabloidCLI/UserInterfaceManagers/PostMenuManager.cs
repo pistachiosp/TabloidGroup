@@ -44,7 +44,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     string PostTitle = Console.ReadLine();
                     Console.Write("Enter URL");
                     string PostUrl = Console.ReadLine();
-                    List<Author> authors = new authorRepo.GetAll();               
+                    List<Author> authors = new authorRepo.GetAll();
                 case "3":
                     return this;
                 case "4":
