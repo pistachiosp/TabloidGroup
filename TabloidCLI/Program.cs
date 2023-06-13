@@ -1,4 +1,5 @@
-﻿using TabloidCLI.UserInterfaceManagers;
+﻿using System;
+using TabloidCLI.UserInterfaceManagers;
 
 namespace TabloidCLI
 {
@@ -6,6 +7,9 @@ namespace TabloidCLI
     {
         static void Main(string[] args)
         {
+            //pleasant greeting should appear above the main menu
+            Console.WriteLine("Hello, welcome to this project");
+            Console.WriteLine();
             // MainMenuManager implements the IUserInterfaceManager interface
             IUserInterfaceManager ui = new MainMenuManager();
             while (ui != null)
