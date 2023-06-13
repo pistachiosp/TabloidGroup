@@ -5,7 +5,7 @@ using TabloidCLI.Models;
 
 namespace TabloidCLI.Repositories
 {
-    public class PostRepository : DatabaseConnector, IRepository<Post>
+    public class PostRepository : DatabaseConnector //IRepository<Post>
     {
         public PostRepository(string connectionString) : base(connectionString) { }
 
@@ -84,25 +84,29 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Post (Name, MaxOccupancy) 
+                    cmd.CommandText = @"INSERT INTO Post (Title, Url, PublishDateTime, Author, Blog) 
                                          OUTPUT INSERTED.Id 
-                                         VALUES (@name, @maxOccupancy)";
-                    cmd.Parameters.AddWithValue("@name", room.Name);
-                    cmd.Parameters.AddWithValue("@maxOccupancy", room.MaxOccupancy);
+                                         VALUES (@title, @url, @publishDateTime, @author, @blog)";
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@url", post.Url);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@author", post.Author);
+                    cmd.Parameters.AddWithValue("@blog", post.Blog);
                     int id = (int)cmd.ExecuteScalar();
 
-                    room.Id = id;
+                    post.Id = id;
                 }
             }
 
-        public void Update(Post post)
-        {
-            throw new NotImplementedException();
-        }
+            /*public void Update(Post post)
+            {
+                throw new NotImplementedException();
+            }
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
+            public void Delete(int id)
+            {
+                throw new NotImplementedException();
+            }*/
         }
     }
 }

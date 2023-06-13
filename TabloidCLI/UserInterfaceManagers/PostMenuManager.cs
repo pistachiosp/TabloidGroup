@@ -45,7 +45,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "5":
                     return this;
                 case "0":
-                    return this;
+                    return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;
