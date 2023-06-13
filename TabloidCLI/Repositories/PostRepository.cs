@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
+using TabloidCLI.Repositories;
 
-namespace TabloidCLI.Repositories
+namespace TabloidCLI
 {
-    public class PostRepository : DatabaseConnector //IRepository<Post>
+    public class PostRepository : DatabaseConnector, IRepository<Post>
     {
         public PostRepository(string connectionString) : base(connectionString) { }
 
@@ -90,15 +91,16 @@ namespace TabloidCLI.Repositories
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url", post.Url);
                     cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
-                    cmd.Parameters.AddWithValue("@author", post.Author);
-                    cmd.Parameters.AddWithValue("@blog", post.Blog);
+                    cmd.Parameters.AddWithValue("@author", post.Author.Id);
+                    cmd.Parameters.AddWithValue("@blog", post.Blog.Id);
                     int id = (int)cmd.ExecuteScalar();
 
                     post.Id = id;
                 }
             }
+        }
 
-            /*public void Update(Post post)
+            public void Update(Post post)
             {
                 throw new NotImplementedException();
             }
@@ -106,7 +108,7 @@ namespace TabloidCLI.Repositories
             public void Delete(int id)
             {
                 throw new NotImplementedException();
-            }*/
+            }
         }
     }
-}
+

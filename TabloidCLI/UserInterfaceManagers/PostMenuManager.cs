@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using TabloidCLI.Repositories;
+using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -13,24 +14,29 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
-        AuthorRepository autorRepo = new AuthorRepository();
-    
+        private AuthorRepository _authorRepository;
+        private BlogRepository _blogRepository;
+        private string _connectionString;
 
-    public PostMenuManager(IUserInterfaceManager parentUI, string conncectionString)
-    {
+        public PostMenuManager(IUserInterfaceManager parentUI, string connectionString)
+        {
         _parentUI = parentUI;
-        _postRepository = new PostRepository(conncectionString);
-    }
+        _postRepository = new PostRepository(connectionString);
+          _authorRepository = new AuthorRepository(connectionString);
+            _blogRepository = new BlogRepository(connectionString);
+            _connectionString = connectionString;
+        }
 
+       
         public IUserInterfaceManager Execute()
         {
             Console.WriteLine("Post Menu");
-            Console.WriteLine(" 1)List Post");
-            Console.WriteLine(" 2)Add Post");
-            Console.WriteLine(" 3)Edit Post");
-            Console.WriteLine(" 4)Remove Post");
-            Console.WriteLine(" 5)Note Management");
-            Console.WriteLine(" 0)Return to Main Menu");
+            Console.WriteLine(" 1) List Post");
+            Console.WriteLine(" 2) Add Post");
+            Console.WriteLine(" 3) Edit Post");
+            Console.WriteLine(" 4) Remove Post");
+            Console.WriteLine(" 5) Note Management");
+            Console.WriteLine(" 0) Return to Main Menu");
 
             Console.WriteLine(">");
             string choice = Console.ReadLine();
@@ -39,12 +45,48 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "1":
                     return this;
                 case "2":
-                    Console.WriteLine("Write a new post");
+                    Console.WriteLine("Add post");
+              
                     Console.Write("Title of post: ");
-                    string PostTitle = Console.ReadLine();
-                    Console.Write("Enter URL");
-                    string PostUrl = Console.ReadLine();
-                    List<Author> authors = new authorRepo.GetAll();
+                    string postTitle = Console.ReadLine();
+                    Console.Write("Enter URL: ");
+                    string postUrl = Console.ReadLine();
+                    List<Author> authors = _authorRepository.GetAll();
+                    foreach (Author a in authors)
+                    {
+                        Console.WriteLine($"{a.Id} - {a.FirstName} {a.LastName}");
+                    }
+                    Console.Write("Which author wrote this post? ");
+                    int PostAuthorId = int.Parse(Console.ReadLine());
+                    
+                    Console.WriteLine();
+                    List<Blog> blogs = _blogRepository.GetAll();
+                    foreach (Blog b in blogs)
+                    {
+                        Console.WriteLine($"{b.Id} - {b.Title}");
+                    }
+                    Console.Write("Which blog did this post come from? ");
+                    int postBlogId = int.Parse(Console.ReadLine());
+
+                    Post addPost = new Post()
+                    {
+                        Title = postTitle,
+                        Url = postUrl,
+                        PublishDateTime = DateTime.Now,
+                        Author = new Author
+                        {
+                            Id = PostAuthorId
+                        },
+                        Blog = new Blog
+                        {
+                            Id = postBlogId
+                        }
+                    };
+
+                    _postRepository.Insert(addPost);
+
+                    Console.WriteLine($"");
+                    return this;
                 case "3":
                     return this;
                 case "4":
