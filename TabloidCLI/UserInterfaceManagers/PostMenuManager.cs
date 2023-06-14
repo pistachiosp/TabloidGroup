@@ -85,7 +85,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
                     _postRepository.Insert(addPost);
 
-                    Console.WriteLine($"");
+                    Console.WriteLine($"Your post was successfully added!");
                     return this;
                 case "3":
                     return this;
