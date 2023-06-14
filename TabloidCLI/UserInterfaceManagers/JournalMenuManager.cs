@@ -63,6 +63,21 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "3":
                     return this;
                 case "4":
+                    List<Journal> journalsDelete = _journalRepository.GetAll();
+                    foreach (Journal j in journalsDelete)
+                    {
+                        Console.WriteLine($"{j.Id} - {j.Title}");
+                    }
+                    Console.Write("Which journal do you want to delete?");
+                    int journalToDelete = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        _journalRepository.Delete(journalToDelete);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Cannot Delete");
+                    }
                     return this;
                 case "0":
                     return _parentUI;
