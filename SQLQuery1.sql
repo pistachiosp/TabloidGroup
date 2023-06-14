@@ -1,4 +1,4 @@
-﻿USE [master]
+USE [master]
 
 IF db_id('TabloidCLI') IS NULl
 BEGIN
@@ -121,3 +121,9 @@ INSERT INTO Tag ( Name ) VALUES ( 'nerdy' );
 --INSERT INTO BlogTag ( BlogId, TagId ) VALUES ( );
 
 INSERT INTO Journal ( Title, Content, CreateDateTime ) VALUES ( 'My Big Day', 'I had a big day today. Would you believe I saw a dog????', '2020-04-30' ) ;
+SELECT *  
+FROM BlogTag
+JOIN Blog ON Blog.Id = BlogTag.BlogId
+Join Tag ON BlogTag.TagId = Tag.Id
+where blog.id = BlogTag.BlogId
+
