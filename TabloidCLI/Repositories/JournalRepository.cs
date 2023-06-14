@@ -15,7 +15,50 @@ namespace TabloidCLI.Repositories
 
         public List<Journal> GetAll()
         {
-            throw new NotImplementedException();
+            //return a list of all journals
+            //list should include title, creation date, and text content
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id, Title, CreateDateTime, Content
+                                        FROM Journal";
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        List<Journal> journals = new List<Journal>();
+                        while (reader.Read())
+                        {
+                            int idColumnPosition = reader.GetOrdinal("id");
+                            int idValue = reader.GetInt32(idColumnPosition);
+
+                            int titleColumnPosition = reader.GetOrdinal("Title");
+                            string titleValue = reader.GetString(titleColumnPosition);
+
+                            int dateTimePosition = reader.GetOrdinal("CreateDateTime");
+                            DateTime dateTimeValue = reader.GetDateTime(dateTimePosition);
+
+                            int contentPosition = reader.GetOrdinal("Content");
+                            string contentValue = reader.GetString(contentPosition);
+
+                            Journal journal = new Journal
+                            {
+                                Id = idValue,
+                                Title = titleValue,
+                                CreateDateTime = dateTimeValue,
+                                Content = contentValue
+                            };
+
+                            journals.Add(journal);
+
+
+                        }
+                        return journals;
+                    }
+                    
+                }
+            }
         }
 
         public Journal Get(int id)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using TabloidCLI.Models;
@@ -35,6 +36,11 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
+                    List<Journal> journals =  _journalRepository.GetAll();
+                    foreach(Journal j in journals)
+                    {
+                        Console.WriteLine($"{j.Title} has an Id of {j.Id}. It was posted on {j.CreateDateTime}. This is the content: {j.Content}");
+                    }
                     return this;
                 case "2":
                     Console.WriteLine("Add Journal");
