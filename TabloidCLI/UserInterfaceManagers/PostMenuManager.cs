@@ -43,6 +43,12 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
+                    Console.WriteLine("Post List");
+                    List<Post> posts = _postRepository.GetAll();
+                    foreach (Post post in posts)
+                    {
+                        Console.WriteLine($"{post.Id}: {post.Title} {post.Url} ");
+                    }
                     return this;
                 case "2":
                     Console.WriteLine("Add post");
