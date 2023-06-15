@@ -34,6 +34,11 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
+                    List<Blog> blogs = _blogRepository.GetAll();
+                    foreach(Blog b in blogs)
+                    {
+                        Console.WriteLine($"{b.Id}- {b.Title} - {b.Url}");
+                    }
                     return this;
                 case "2":
                     Console.WriteLine("Add a Blog: ");
