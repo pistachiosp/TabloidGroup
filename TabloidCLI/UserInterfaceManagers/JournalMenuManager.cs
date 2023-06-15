@@ -68,7 +68,12 @@ namespace TabloidCLI.UserInterfaceManagers
                         Console.WriteLine($"{j.Id} - {j.Title}.");
                     }
                     Console.Write("Which journal entry would you like to edit? ");
-                    int journalId = int.Parse(Console.ReadLine());
+                    string journalId = Console.ReadLine();
+                    if (journalId == "")
+                    {
+                        return this;
+                    } else
+                    {
                     Console.Write("What would you like the new title to be?");
                     string newTitle = Console.ReadLine();
                     Console.Write("What would you like the journal content to be? ");
@@ -76,7 +81,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
                     Journal journalEdit = new Journal
                     {
-                        Id = journalId,
+                        Id = int.Parse(journalId),
                         Title = newTitle,
                         Content = newContent
                     };
@@ -84,6 +89,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     _journalRepository.Update(journalEdit);
 
                     Console.WriteLine("Your journal entry has been updated!");
+                    }
                     return this;
                 case "4":
                     List<Journal> journalsDelete = _journalRepository.GetAll();
