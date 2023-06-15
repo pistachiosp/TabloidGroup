@@ -96,6 +96,21 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "3":
                     return this;
                 case "4":
+                    List<Post> postsToDelete = _postRepository.GetAll();
+                    foreach (Post pDelete in postsToDelete)
+                    {
+                        Console.WriteLine($"{pDelete.Id} - {pDelete.Title}");
+                    }
+                    Console.Write("Which post would you like to delete?: ");
+                    int postToDelete = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        _postRepository.Delete(postToDelete);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Cannot Delete");
+                    }
                     return this;
                 case "5":
                     return this;
