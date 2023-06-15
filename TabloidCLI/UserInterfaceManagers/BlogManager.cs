@@ -41,9 +41,9 @@ namespace TabloidCLI.UserInterfaceManagers
                     }
                     return this;
                 case "2":
-                    Console.WriteLine("Add a Blog: ");
+                    Console.WriteLine("Add a Blog");
 
-                    Console.Write("Title of Blog");
+                    Console.Write("Title of Blog: ");
                     string blogTitle = Console.ReadLine();
 
                     Console.Write("Add URL for the Blog: ");
@@ -61,6 +61,23 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "3":
                     return this;
                 case "4":
+                    List<Blog> blogsToDelete = _blogRepository.GetAll();
+                    foreach (Blog b in blogsToDelete)
+                    {
+                        Console.WriteLine($"{b.Id}- {b.Title} - {b.Url}");
+                    }
+                    Console.Write("Which blog do you want to remove?: ");
+                    int deletedBlog = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        _blogRepository.Delete(deletedBlog);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                    Console.WriteLine("Your blog was successfully deleted!");
                     return this;
                 case "0":
                     return _parentUI;
