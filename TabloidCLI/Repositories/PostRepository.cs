@@ -139,15 +139,35 @@ namespace TabloidCLI
             }
         }
 
-            public void Update(Post post)
+        public void Update(Post post)
             {
-                throw new NotImplementedException();
+            using (SqlConnection conn = Connection) 
+            { 
+                    conn.Open ();
+                using (SqlCommand cmd = conn.CreateCommand()) 
+                {
+                    cmd.CommandText = @"UPDATE Post 
+                        SET Title = @title,
+                        URL = @url,                      
+                        AuthorId = @author,
+                        BlogId = @blog
+                        WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@url", post.Url);
+                    //cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@author", post.Author.Id);
+                    cmd.Parameters.AddWithValue("@blog", post.Blog.Id);
+                    cmd.Parameters.AddWithValue("@id", post.Id);
+                    //int id = (int)cmd.ExecuteScalar();
+                    cmd.ExecuteNonQuery();
+                }
             }
+        }
 
             public void Delete(int id)
             {
                 using (SqlConnection conn = Connection)
-            {
+                {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
@@ -155,7 +175,7 @@ namespace TabloidCLI
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
                 }
-            }
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using TabloidCLI.Repositories;
 using TabloidCLI.Models;
+using System.ComponentModel;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -94,6 +95,55 @@ namespace TabloidCLI.UserInterfaceManagers
                     Console.WriteLine($"Your post was successfully added!");
                     return this;
                 case "3":
+                    Console.WriteLine("Edit Post Entry");
+                    List<Post> postEdit = _postRepository.GetAll();
+                    foreach (Post p in postEdit)
+                    {
+                        Console.WriteLine($"{p.Id} - {p.Title}");
+                    }
+                    Console.WriteLine("Pick your post to edit ");
+                    string postId = Console.ReadLine();
+                    if (postId == "")
+                    {
+                        return this;
+                    } else
+                    {
+                        Console.Write("Pick a new title ");
+                        string newPostTitle = Console.ReadLine();
+                        Console.Write("change URL ");
+                        string newPostUrl = Console.ReadLine();
+
+                        List<Author> authorList = _authorRepository.GetAll();
+                        foreach (Author author in authorList)
+                        {
+                            Console.WriteLine($"{author.Id} -           {author.FullName}");
+                        }
+                        Console.Write("Pick an Author ");
+                        int newauthorId = int.Parse(Console.ReadLine());
+                        List<Blog> blogList = _blogRepository.GetAll();
+                        foreach (Blog blog in blogList)
+                        {
+                            Console.WriteLine($"{blog.Id} - {blog.Title}");
+                        }
+                        Console.Write("Pick a Blog ");
+                        int newblogId = int.Parse(Console.ReadLine());
+
+                        Post postToEdit = new Post
+                        {
+                            Id = int.Parse(postId),
+                            Title = newPostTitle,
+                            Url = newPostUrl,
+                            Author = new Author
+                            {
+                                Id = newauthorId,
+                            },
+                            Blog = new Blog
+                            { Id = newblogId }
+
+                        };
+                        _postRepository.Update(postToEdit);
+                        Console.WriteLine("Your post has been updated!");
+                    }
                     return this;
                 case "4":
                     List<Post> postsToDelete = _postRepository.GetAll();
