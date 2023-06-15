@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -59,6 +60,36 @@ namespace TabloidCLI.UserInterfaceManagers
                     Console.WriteLine("Blog added successfully!");
                     return this;
                 case "3":
+                    Console.WriteLine("Edit Blog");
+                    List<Blog> BlogTwo = _blogRepository.GetAll();
+                    foreach (Blog b in BlogTwo)
+                    {
+                        Console.WriteLine($"{b.Id} - {b.Title} - {b.Url}.");
+                    }
+                    Console.Write("Which blog would you like to edit? ");
+                    string blogId = Console.ReadLine();
+                    if (blogId == "")
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        Console.Write("What would you like the new title to be?");
+                        string newTitle = Console.ReadLine();
+                        Console.Write("What would you like the new Url to be? ");
+                        string newUrl = Console.ReadLine();
+
+                        Blog blogEdit = new Blog()
+                        {
+                            Id = int.Parse(blogId),
+                            Title = newTitle,
+                            Url = newUrl
+                        };
+
+                        _blogRepository.Update(blogEdit);
+
+                        Console.WriteLine("Your blog has been updated!");
+                    }
                     return this;
                 case "4":
                     List<Blog> blogsToDelete = _blogRepository.GetAll();

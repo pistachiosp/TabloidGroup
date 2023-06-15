@@ -7,10 +7,10 @@ using TabloidCLI.Repositories;
 
 namespace TabloidCLI
 {
-    internal class BlogRepository: DatabaseConnector, IRepository<Blog>
+    internal class BlogRepository : DatabaseConnector, IRepository<Blog>
     {
         public BlogRepository(string connectionString) : base(connectionString) { }
-        
+
         public List<Blog> GetAll()
         {
             using (SqlConnection conn = Connection)
@@ -63,7 +63,7 @@ namespace TabloidCLI
             throw new NotImplementedException();
         }
 
-        public void Delete(int id) 
+        public void Delete(int id)
         {
             using (SqlConnection conn = Connection)
             {
@@ -78,9 +78,25 @@ namespace TabloidCLI
             }
         }
 
-        public void Update(Blog blog) 
+        public void Update(Blog blog)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Blog
+                                           SET Title = @title,
+                                               Url = @url
+                                           WHERE id = @id";
+
+                    cmd.Parameters.AddWithValue("@title", blog.Title);
+                    cmd.Parameters.AddWithValue("@url", blog.Url);
+                    cmd.Parameters.AddWithValue("@id", blog.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
