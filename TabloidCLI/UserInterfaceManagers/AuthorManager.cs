@@ -55,9 +55,10 @@ namespace TabloidCLI.UserInterfaceManagers
                     {
                         Remove();
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        Console.WriteLine("Hey! You can't delete that author!");
+                        Console.WriteLine(ex.Message);
+                        //Console.WriteLine("Hey! You can't delete that author!");
                     }
                     
                     return this;
