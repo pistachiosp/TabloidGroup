@@ -28,6 +28,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Blog");
             Console.WriteLine(" 3) Edit Blog");
             Console.WriteLine(" 4) Remove Blog");
+            Console.WriteLine(" 5) Blog Details");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -110,11 +111,51 @@ namespace TabloidCLI.UserInterfaceManagers
 
                     Console.WriteLine("Your blog was successfully deleted!");
                     return this;
+                    case "5":
+                    Blog blog = Choose();
+                    if (blog == null)
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        return new BlogDetailManager(this, _connectionString, blog.Id);
+                    }
                 case "0":
                     return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;
+            }
+        }
+        private Blog Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a Blog:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Blog> blogs = _blogRepository.GetAll();
+
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return blogs[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
             }
         }
     }
