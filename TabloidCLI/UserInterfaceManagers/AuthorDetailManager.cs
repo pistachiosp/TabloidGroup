@@ -74,7 +74,7 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetByAuthor(_authorId);
             foreach (Post post in posts)
             {
-                Console.WriteLine(post);
+                Console.WriteLine($"{post.Title}");
             }
             Console.WriteLine();
         }
@@ -127,7 +127,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 Tag tag = tags[choice - 1];
                 _authorRepository.DeleteTag(author.Id, tag.Id);
             }
-            catch (Exception ex)
+            catch
             {
                 Console.WriteLine("Invalid Selection. Won't remove any tags.");
             }
