@@ -1,8 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Design;
 using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
@@ -74,11 +71,55 @@ namespace TabloidCLI.UserInterfaceManagers
         }
         private void AddTag()
         {
-            throw new NotImplementedException();
+            Blog blog = _blogRepository.Get( _blogId);
+
+            Console.WriteLine($"What tag would you like to add to {blog.Title}?");
+            List<Tag> tags = _tagRepository.GetAll();
+
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Tag tag = tags[i];
+                Console.WriteLine($" {i + 1}) + {tag.Name}");
+            }
+            Console.WriteLine(">");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                Tag tag = tags[choice - 1];
+                _blogRepository.InsertTag(blog, tag);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Thats not a correct choice obviously");
+            }
         }
         private void RemoveTag()
         {
-            throw new NotImplementedException();
+            Blog blog = _blogRepository.Get(_blogId);
+
+            Console.WriteLine($"Which tag would you like to remove from {blog.Title}?");
+            List<Tag> tags = blog.Tags;
+
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Tag tag = tags[i];
+                Console.WriteLine($" {i + 1}) {tag.Name}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                Tag tag = tags[choice - 1];
+                _blogRepository.DeleteTag(blog.Id, tag.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection. Won't remove any tags.");
+            }
         }
         private void ViewPost()
         {
