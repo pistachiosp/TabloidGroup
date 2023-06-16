@@ -152,7 +152,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 int choice = int.Parse(input);
                 return blogs[choice - 1];
             }
-            catch (Exception ex)
+            catch 
             {
                 Console.WriteLine("Invalid Selection");
                 return null;

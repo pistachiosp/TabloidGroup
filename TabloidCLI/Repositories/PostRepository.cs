@@ -56,7 +56,54 @@ namespace TabloidCLI
 
         public Post Get(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT p.Id AS PostId,
+                                               p.Title,
+                                               p.URL,
+                                               p.PublishDateTime,
+                                               t.Id as TagId,
+                                               t.Name
+                                        FROM Post p
+                                            LEFT JOIN PostTag pt ON p.Id = pt.PostId
+                                            LEFT JOIN Tag t ON t.Id = pt.TagId
+                                        WHERE P.id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Post post = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (post == null)
+                        {
+                            post = new Post()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("PostId")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Url = reader.GetString(reader.GetOrdinal("URL")),
+                                PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime"))
+                            };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
+                        {
+                            post.Tags.Add(new Tag()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                            });
+                        }
+                    }
+                    reader.Close();
+
+                    return post;
+                }    
+            }
         }
 
         public List<Post> GetByAuthor(int authorId)
