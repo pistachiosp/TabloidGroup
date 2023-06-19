@@ -23,6 +23,7 @@ namespace TabloidCLI.Repositories
         {
             throw new NotImplementedException();
         }
+        
 
         public void Insert(Note note)
         {

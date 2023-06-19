@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
-using TabloidCLI.Repositories;
 using TabloidCLI.Models;
-using System.ComponentModel;
+
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -36,8 +30,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Post");
             Console.WriteLine(" 3) Edit Post");
             Console.WriteLine(" 4) Remove Post");
-            Console.WriteLine(" 5) Note Management");
-            Console.WriteLine(" 6) Post Details");
+            Console.WriteLine(" 5) Post Details");
             Console.WriteLine(" 0) Return to Main Menu");
 
             Console.WriteLine(">");
@@ -164,8 +157,6 @@ namespace TabloidCLI.UserInterfaceManagers
                     }
                     return this;
                 case "5":
-                    return this;
-                case "6":
                     Post posty = Choose();
                     if (posty == null)
                     {
