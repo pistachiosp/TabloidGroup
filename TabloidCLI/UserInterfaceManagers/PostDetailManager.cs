@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System;
 using System.Collections.Generic;
 using TabloidCLI.Models;
 
@@ -49,8 +50,15 @@ namespace TabloidCLI.UserInterfaceManagers
                     RemoveTag();
                     return this;
                 case "4":
-
-                    return new NoteManager(this, _connectionString, _postId);
+                    Post posta = Choose();
+                    if (posta == null) 
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        return new NoteManager(this, _connectionString, posta.Id);
+                    }
                 case "0":
                     return _parentUI;
                 default:
@@ -59,6 +67,37 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        private Post Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "YOU must CHOOSE";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Post> posts = _postRepository.GetAll();
+
+            for (int i = 0; i < posts.Count; i++)
+            {
+                Post post = posts[i];
+                Console.WriteLine($" {i + 1}) {post.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return posts[choice - 1];
+            }
+            catch
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+
+        }
         private void View()
         {
             Post post = _postRepository.Get(_postId);
