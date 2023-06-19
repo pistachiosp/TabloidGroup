@@ -12,19 +12,21 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private IUserInterfaceManager _parentUI;
         private NoteRepository _noteRepository;
-        private int _postId;
+        private int _noteId;
+        private string _connectionString;
     
 
-    public NoteManager(IUserInterfaceManager parentUI, string connectionString, int postId)
+    public NoteManager(IUserInterfaceManager parentUI, string connectionString, int noteId)
     {
         _parentUI = parentUI;
         _noteRepository = new NoteRepository(connectionString);
-       
-        _postId = postId;
+        _noteId = noteId;
+        _connectionString = connectionString;
     }
 
         public IUserInterfaceManager Execute()
         {
+            Note note = _noteRepository.Get(_noteId);
             Console.WriteLine("Notes Menu");
             Console.WriteLine(" 1) List Notes");
             Console.WriteLine(" 2) Add Notes");
